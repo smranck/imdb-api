@@ -23,3 +23,5 @@ database/sampleData.js
 # Not sure what this is right now
 client/.DS_Store
 
+#Heroku stuff
+heroku*
