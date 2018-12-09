@@ -17,14 +17,16 @@ app.get('/health', (req, res) => {
   res.json({ status: 'running' });
 });
 
-app.get('/config', (req, res) => {
-  res.json({ PRODUCTION_DATABASE_USER: process.env.PRODUCTION_DATABASE_USER });
+app.get('/config', async (req, res) => {
+  let queryString = `SELECT * FROM titles as t, ratings as r
+  WHERE t.tconst = r.tconst AND t.tconst='tt0368891'`;
+  let data = await db.getMovies(queryString);
+  res.json(data);
 });
 
 // Endpoint for general movie search
 app.get('/movies', async (req, res) => {
   const { query } = req;
-  console.log(query);
   let queryString = `SELECT * FROM titles as t, ratings as r
   WHERE t.tconst = r.tconst AND t.titletype = 'movie'`;
 
