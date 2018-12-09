@@ -17,6 +17,10 @@ app.get('/health', (req, res) => {
   res.json({ status: 'running' });
 });
 
+app.get('/config', (req, res) => {
+  res.json({ PRODUCTION_DATABASE_USER: process.env.PRODUCTION_DATABASE_USER });
+});
+
 // Endpoint for general movie search
 app.get('/movies', async (req, res) => {
   const { query } = req;
