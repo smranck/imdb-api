@@ -18,8 +18,15 @@ app.get('/health', (req, res) => {
 });
 
 app.get('/config', async (req, res) => {
-  let queryString = `SELECT * FROM titles as t, ratings as r
-  WHERE t.tconst = r.tconst AND t.tconst='tt0368891'`;
+  let queryString = `SELECT * FROM titles as t INNER JOIN ratings as r
+  ON (t.tconst = r.tconst) AND t.tconst='tt0368891'`;
+  let data = await db.getMovies(queryString);
+  res.json(data);
+});
+
+app.get('/testdb', async (req, res) => {
+  let queryString = `SELECT * FROM titles as t INNER JOIN ratings as r
+  ON (t.tconst = r.tconst) WHERE r.numvotes = 7 LIMIT 10`;
   let data = await db.getMovies(queryString);
   res.json(data);
 });
@@ -27,8 +34,8 @@ app.get('/config', async (req, res) => {
 // Endpoint for general movie search
 app.get('/movies', async (req, res) => {
   const { query } = req;
-  let queryString = `SELECT * FROM titles as t, ratings as r
-  WHERE t.tconst = r.tconst AND t.titletype = 'movie'`;
+  let queryString = `SELECT * FROM titles as t INNER JOIN ratings as r
+  ON (t.tconst = r.tconst) AND t.titletype = 'movie'`;
 
   if (query.year !== undefined) {
     queryString += ` AND t.startyear = ${query.year}`;
@@ -66,8 +73,8 @@ app.get('/movies/:filter/:category', async (req, res) => {
   if (!req.params.category) {
     res.status(404).json('Both Filter and Category are required');
   }
-  let queryString = `SELECT * FROM titles as t, ratings as r
-  WHERE t.tconst = r.tconst AND t.titletype = 'movie'`;
+  let queryString = `SELECT * FROM titles as t INNER JOIN ratings as r
+  ON (t.tconst = r.tconst) AND t.titletype = 'movie'`;
 
   if (params.filter === 'genre') {
     // Handle genre inputs with incorrect capitalization
