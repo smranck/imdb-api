@@ -17,23 +17,24 @@ export default class App extends React.Component {
                 </ul>
               </li>
               <li>
-                /movies/genre/comedy?year=2006
+                https://imdb-api-ranck.herokuapp.com//movies/genre/comedy?year=2006
                 <ul>
                   <li>Returns list of comedies from the year 2006</li>
                 </ul>
               </li>
               <li>
-                /movies/genre/documentary?sort=rating
+                https://imdb-api-ranck.herokuapp.com//movies/genre/documentary?sort=rating
                 <ul>
                   <li>Returns a descending sorted list of the best documentaries</li>
                 </ul>
               </li>
               <li>
-                /movies/year/1991?isAdult=false
+                https://imdb-api-ranck.herokuapp.com//movies/year/1991?isAdult=false
                 <ul>
                   <li>Returns a list of non-adult movies from 1991</li>
                 </ul>
               </li>
+              <li>All queries return up to 1000 results</li>
             </ul>
           </section>
           <div>
@@ -64,7 +65,11 @@ export default class App extends React.Component {
               <ul>
                 <li>genre</li>
                 <ul>
-                  <li>genre option</li>
+                  <li>
+                    Action | Adult | Animation | Biography | Comedy | Crime | Documentary | Drama |
+                    Family | Fantasy | Game-Show | History | Horror | Music | Musical | Mystery |
+                    News | Romance | Sci-Fi | Short | Sport | Thriller | War | Western
+                  </li>
                 </ul>
                 <ul>
                   <li>genre option</li>
@@ -72,6 +77,9 @@ export default class App extends React.Component {
               </ul>
               <ul>
                 <li>year</li>
+                <ul>
+                  <li>number [1874-2018]</li>
+                </ul>
               </ul>
             </list>
             <h5>Available additionalQuery options and possible values</h5>
@@ -95,6 +103,15 @@ export default class App extends React.Component {
                 </ul>
                 <ul>
                   <li>rating</li>
+                </ul>
+              </ul>
+            </list>
+            <h5>Other useful endpoints</h5>
+            <list>
+              <ul>
+                <li>https://imdb-api-ranck.herokuapp.com/health</li>
+                <ul>
+                  <li>Returns app status</li>
                 </ul>
               </ul>
             </list>
