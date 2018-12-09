@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
+const db = require('../database/index');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -17,8 +18,7 @@ app.get('/health', (req, res) => {
 });
 
 // Endpoint for general movie search
-app.get('/movies', (req, res) => {
-  // console.log('query', req.query);
+app.get('/movies', async (req, res) => {
   const { query } = req;
   let queryString = `SELECT * FROM titles as t, ratings as r
   WHERE t.tconst = r.tconst AND t.titletype = 'movie'`;
@@ -41,16 +41,16 @@ app.get('/movies', (req, res) => {
     }
   }
 
-  console.log(queryString);
+  let data = await db.getMovies(queryString);
 
   res
-    .json(req.query)
+    .json(data)
     .status(200)
     .send();
 });
 
 // Endpoint for filtered movie search
-app.get('/movies/:filter/:category', (req, res) => {
+app.get('/movies/:filter/:category', async (req, res) => {
   const { params, query } = req;
 
   if (!req.params.category) {
@@ -74,8 +74,6 @@ app.get('/movies/:filter/:category', (req, res) => {
     res.status(404).json('Check your filter selection');
   }
 
-  // console.log(queryString);
-
   if (query.year !== undefined) {
     queryString += ` AND t.startyear = ${query.year}`;
   }
@@ -94,12 +92,17 @@ app.get('/movies/:filter/:category', (req, res) => {
     }
   }
 
-  console.log(queryString);
+  let data = await db.getMovies(queryString);
 
   res
-    .json(query)
+    .json(data)
     .status(200)
     .send();
+
+  // res
+  //   .json(query)
+  //   .status(200)
+  //   .send();
 });
 
 app.use(bodyParser.json()).listen(PORT, () => console.log(`IMDB-APP LISTENING ON PORT ${PORT}`));
