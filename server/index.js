@@ -42,11 +42,15 @@ app.get('/movies', async (req, res) => {
     }
   }
 
-  queryString += ' LIMIT 5';
-
+  // Handle cases where all movies would be returned
+  queryString += ' LIMIT 1000';
   let data = await db.getMovies(queryString);
 
-  res.json(data);
+  if (data.length === 0) {
+    res.json({ message: 'No results were found. Try another search' });
+  } else {
+    res.json(data);
+  }
 });
 
 // Endpoint for filtered movie search
@@ -93,10 +97,14 @@ app.get('/movies/:filter/:category', async (req, res) => {
     }
   }
 
-  queryString += ' LIMIT 5';
+  queryString += ' LIMIT 1000';
   let data = await db.getMovies(queryString);
 
-  res.json(data);
+  if (data.length === 0) {
+    res.json({ message: 'No results were found. Try another search' });
+  } else {
+    res.json(data);
+  }
 });
 
 app.use(bodyParser.json()).listen(PORT, () => console.log(`IMDB-APP LISTENING ON PORT ${PORT}`));
