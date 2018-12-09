@@ -1,4 +1,5 @@
 const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const SRC_DIR = path.join(__dirname, '/client/src');
 const DIST_DIR = path.join(__dirname, '/client/dist');
@@ -16,7 +17,7 @@ module.exports = {
         include: SRC_DIR,
         loader: 'babel-loader',
         query: {
-          presets: ['env', 'react', 'es2015', 'stage-0'],
+          presets: ['env', 'react', 'stage-0'],
         },
       },
       {
@@ -29,4 +30,10 @@ module.exports = {
       },
     ],
   },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: `${SRC_DIR}/index.html`,
+    }),
+  ],
+  resolve: { extensions: ['.js', '.jsx'] },
 };
