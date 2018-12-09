@@ -7,10 +7,10 @@ const db = require('../database/index');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// app.use(express.static(path.join(__dirname, '/../client/dist/'))).use(bodyParser.json());
+app.use(express.static(path.join(__dirname, '/../client/dist/'))).use(bodyParser.json());
 
 app.get('/', (req, res) => {
-  res.status(200).sendFile(path.join(__dirname, '../client/src/', 'index.html'));
+  res.status(200).sendFile(path.join(__dirname, '../client/dist', 'index.jsx'));
 });
 
 app.get('/health', (req, res) => {
@@ -20,6 +20,7 @@ app.get('/health', (req, res) => {
 // Endpoint for general movie search
 app.get('/movies', async (req, res) => {
   const { query } = req;
+  console.log(query);
   let queryString = `SELECT * FROM titles as t, ratings as r
   WHERE t.tconst = r.tconst AND t.titletype = 'movie'`;
 
@@ -41,12 +42,11 @@ app.get('/movies', async (req, res) => {
     }
   }
 
+  queryString += ' LIMIT 5';
+
   let data = await db.getMovies(queryString);
 
-  res
-    .json(data)
-    .status(200)
-    .send();
+  res.json(data);
 });
 
 // Endpoint for filtered movie search
@@ -66,10 +66,6 @@ app.get('/movies/:filter/:category', async (req, res) => {
     queryString += ` AND strpos(t.genres, '${categoryCapAdjusted}') > 0`;
   } else if (params.filter === 'year') {
     queryString += ` AND t.startyear = ${params.category}`;
-  } else if (params.filter === 'title') {
-    queryString += ` AND t.primarytitle = '${params.category}' OR t.originaltitle = '${
-      query.category
-    }'`;
   } else {
     res.status(404).json('Check your filter selection');
   }
@@ -80,6 +76,11 @@ app.get('/movies/:filter/:category', async (req, res) => {
 
   if (query.isAdult !== undefined) {
     queryString += ` AND t.isAdult = ${query.isAdult}`;
+  }
+  if (query.title !== undefined) {
+    queryString += ` AND t.primarytitle = '${params.category}' OR t.originaltitle = '${
+      query.category
+    }'`;
   }
 
   if (query.sort !== undefined) {
@@ -92,17 +93,10 @@ app.get('/movies/:filter/:category', async (req, res) => {
     }
   }
 
+  queryString += ' LIMIT 5';
   let data = await db.getMovies(queryString);
 
-  res
-    .json(data)
-    .status(200)
-    .send();
-
-  // res
-  //   .json(query)
-  //   .status(200)
-  //   .send();
+  res.json(data);
 });
 
 app.use(bodyParser.json()).listen(PORT, () => console.log(`IMDB-APP LISTENING ON PORT ${PORT}`));
