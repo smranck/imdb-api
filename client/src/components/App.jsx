@@ -11,30 +11,31 @@ export default class App extends React.Component {
             <h5>Sample Usage</h5>
             <ul>
               <li>
-                /movies/year/1991
+                GET request to https://imdb-api-ranck.herokuapp.com/movies/year/1991
                 <ul>
                   <li>Returns a list of movies from 1991</li>
                 </ul>
               </li>
               <li>
-                https://imdb-api-ranck.herokuapp.com//movies/genre/comedy?year=2006
+                GET request to https://imdb-api-ranck.herokuapp.com/movies/genre/comedy?year=2006
                 <ul>
                   <li>Returns list of comedies from the year 2006</li>
                 </ul>
               </li>
               <li>
-                https://imdb-api-ranck.herokuapp.com//movies/genre/documentary?sort=rating
+                GET request to
+                https://imdb-api-ranck.herokuapp.com/movies/genre/documentary?sort=rating
                 <ul>
                   <li>Returns a descending sorted list of the best documentaries</li>
                 </ul>
               </li>
               <li>
-                https://imdb-api-ranck.herokuapp.com//movies/year/1991?isAdult=false
+                GET request to https://imdb-api-ranck.herokuapp.com/movies/year/1991?isAdult=false
                 <ul>
                   <li>Returns a list of non-adult movies from 1991</li>
                 </ul>
               </li>
-              <li>All queries return up to 1000 results</li>
+              <li>All queries return up to 1000 movie results</li>
             </ul>
           </section>
           <div>
@@ -71,9 +72,6 @@ export default class App extends React.Component {
                     News | Romance | Sci-Fi | Short | Sport | Thriller | War | Western
                   </li>
                 </ul>
-                <ul>
-                  <li>genre option</li>
-                </ul>
               </ul>
               <ul>
                 <li>year</li>
@@ -87,7 +85,7 @@ export default class App extends React.Component {
               <ul>
                 <li>year</li>
                 <ul>
-                  <li>number</li>
+                  <li>number [1874-2018]</li>
                 </ul>
               </ul>
               <ul>
@@ -99,10 +97,26 @@ export default class App extends React.Component {
               <ul>
                 <li>sort</li>
                 <ul>
-                  <li>length</li>
+                  <li>length | rating</li>
                 </ul>
+              </ul>
+            </list>
+            <h5>Reading your results</h5>
+            <list>
+              <ul>
+                <li>[key] : [value description]</li>
                 <ul>
-                  <li>rating</li>
+                  <li>tconst : Unique Key in movie database</li>
+                  <li>titletype : Media type</li>
+                  <li>primarytitle : Title on most recent release</li>
+                  <li>originaltitle : Title on release</li>
+                  <li>isadult : Indicates an adult movie</li>
+                  <li>startyear : Year of Release</li>
+                  <li>endyear : Year Ended (null for movies)</li>
+                  <li>runtimeminutes : Length</li>
+                  <li>genres : All genres applicable to result</li>
+                  <li>averagerating : Average viewer rating of movie</li>
+                  <li>numvotes : Total number of viewers who voted</li>
                 </ul>
               </ul>
             </list>
