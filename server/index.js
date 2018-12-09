@@ -24,7 +24,7 @@ app.get('/movies', (req, res) => {
   WHERE t.tconst = r.tconst AND t.titletype = 'movie'`;
 
   if (query.year !== undefined) {
-    queryString += ` AND t.startyear <= ${query.year} AND t.endyear >= ${query.year}`;
+    queryString += ` AND t.startyear = ${query.year}`;
   }
 
   if (query.isAdult !== undefined) {
@@ -60,11 +60,12 @@ app.get('/movies/:filter/:category', (req, res) => {
   WHERE t.tconst = r.tconst AND t.titletype = 'movie'`;
 
   if (params.filter === 'genre') {
-    let categoryCapAdjusted = params.category.charAt(0).toUpperCase() + params.category.slice(1).toLowerCase();
-    string.charAt(0).toUpperCase() + string.slice(1);
+    // Handle genre inputs with incorrect capitalization
+    let categoryCapAdjusted = params.category.charAt(0).toUpperCase();
+    categoryCapAdjusted += params.category.slice(1).toLowerCase();
     queryString += ` AND strpos(t.genres, '${categoryCapAdjusted}') > 0`;
   } else if (params.filter === 'year') {
-    queryString += ` AND t.startyear <= ${params.category} AND t.endyear >= ${params.category}`;
+    queryString += ` AND t.startyear = ${params.category}`;
   } else if (params.filter === 'title') {
     queryString += ` AND t.primarytitle = '${params.category}' OR t.originaltitle = '${
       query.category
@@ -73,10 +74,10 @@ app.get('/movies/:filter/:category', (req, res) => {
     res.status(404).json('Check your filter selection');
   }
 
-  console.log(queryString);
+  // console.log(queryString);
 
   if (query.year !== undefined) {
-    queryString += ` AND t.startyear <= ${query.year} AND t.endyear >= ${query.year}`;
+    queryString += ` AND t.startyear = ${query.year}`;
   }
 
   if (query.isAdult !== undefined) {
